@@ -52,47 +52,55 @@
         </form>
     </main>
 
-    <script>
-        <script>
+    
+ <script>
     const form = document.getElementById('orientationForm');
     const btnsChoix = document.querySelectorAll('.btn-choix');
     const domaineChoisiInput = document.getElementById('domaineChoisi');
     const submitBtn = document.getElementById('submitBtn');
 
     // Mettez ici l'URL que vous avez copiée de Google Apps Script
-    // Exemple : const GOOGLE_SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfyc.../exec';
+    // ATTENTION : Si l'URL n'est pas correcte, l'envoi échouera, mais la redirection devrait toujours fonctionner.
     const GOOGLE_SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwDHFbzVwx4v5sD7trp2MHS5fbBHHkd2jlw1Kosyu4YxCMIoEmcufGbEzh81hhuyjV2-A/exec'; 
     
-    // 1. Gestion du choix de domaine
+    // --- 1. Gestion du choix de domaine (Sélection) ---
     btnsChoix.forEach(button => {
         button.addEventListener('click', (event) => {
+            // Retire la sélection 'active' de tous les boutons
             btnsChoix.forEach(btn => btn.classList.remove('active'));
+            
+            // Ajoute la sélection 'active' au bouton cliqué
             event.target.classList.add('active');
+            
+            // Met à jour le champ caché avec le choix de domaine
             const choix = event.target.getAttribute('data-domaine');
             domaineChoisiInput.value = choix;
+            
+            // Active le bouton de soumission
             submitBtn.disabled = false;
         });
     });
 
-    // 2. Gestion de la soumission du formulaire
+    // --- 2. Gestion de la soumission du formulaire (Envoi et Redirection) ---
     form.addEventListener('submit', function(e) {
-        e.preventDefault(); // Empêche l'envoi HTML standard
+        e.preventDefault(); // Empêche l'envoi HTML standard et la redirection immédiate
 
-        if (!domaineChoisiInput.value) {
+        const domaine = domaineChoisiInput.value;
+
+        if (!domaine) {
             alert("Veuillez choisir un domaine avant de valider.");
+            submitBtn.disabled = true;
             return;
         }
 
-        // Récupérer toutes les données du formulaire
-        const formData = new FormData(form);
-        
-        // Convertir les données en format URL-encoded pour Apps Script
-        const urlEncodedData = new URLSearchParams(formData).toString();
-        
         // Bloquer le bouton pendant l'envoi pour éviter les doublons
         submitBtn.disabled = true;
-        submitBtn.textContent = "Envoi en cours...";
+        submitBtn.textContent = "Envoi des données...";
 
+        // Récupérer toutes les données du formulaire
+        const formData = new FormData(form);
+        const urlEncodedData = new URLSearchParams(formData).toString();
+        
         // Envoi des données à Google Sheets via Apps Script
         fetch(GOOGLE_SHEET_ENDPOINT, {
             method: 'POST',
@@ -102,21 +110,25 @@
             }
         })
         .then(response => {
-            // Le statut OK (200) de Apps Script est renvoyé même s'il ne contient que "OK"
+            // Le statut OK est reçu. On considère que l'envoi a réussi (même si on ne vérifie pas le contenu)
             console.log('Données envoyées avec succès à Google Sheet.');
             
-            // REDIRECTION après l'envoi réussi
-            const domaine = domaineChoisiInput.value;
+            // REDIRECTION : C'est ici que l'étudiant est envoyé vers la page choisie.
             window.location.href = `info-${domaine}.html`;
         })
         .catch(error => {
             console.error('Erreur lors de l\'envoi des données :', error);
-            alert("Une erreur est survenue lors de l'enregistrement. Veuillez réessayer.");
-            submitBtn.disabled = false;
-            submitBtn.textContent = "Valider et Continuer";
+            // Même en cas d'erreur d'envoi des données, on peut choisir de rediriger l'utilisateur.
+            // Si vous voulez être sûr qu'il accède au groupe WhatsApp :
+            alert("Une erreur est survenue lors de l'enregistrement de vos données. Vous allez être redirigé...");
+            window.location.href = `info-${domaine}.html`;
+            
+            // Réactiver le bouton en cas de vrai blocage :
+            // submitBtn.disabled = false;
+            // submitBtn.textContent = "Valider et Continuer";
         });
     });
 </script>
-    </script>
+
 </body>
 </html>
