@@ -103,41 +103,68 @@
     </div>
 
     <script>
-        // =========================================================================
-        //  CODE ROBUSTE : L'URL de base de votre site GitHub Pages est forcée.
-        //  Ceci résout les problèmes de redirection avec Formspree.
-        // =========================================================================
+// L'URL de base est forcée : c'est l'URL de votre dépôt GitHub Pages.
         const GITHUB_PAGES_BASE_URL = 'https://c2007-ar.github.io/futur_tech/'; 
+        const form = document.getElementById('orientation-form');
+        const submitButton = document.getElementById('submit-button');
         
-        document.getElementById('orientation-form').addEventListener('submit', function(e) {
-            
-            const form = e.currentTarget;
-            const choix = document.querySelector('input[name="Choix_Domaine"]:checked');
-            
-            if (choix) {
-                let pageRedirection = '';
-                
-                switch (choix.value) {
-                    case 'Robotique':
-                        pageRedirection = 'robotique.html';
-                        break;
-                    case 'Développement Web':
-                        // Le fichier de destination est 'developpement-web.html'
-                        pageRedirection = 'devweb.html';
-                        break;
-                }
-                
-                // Construction de l'URL de redirection complète 
-                const redirectionURL = GITHUB_PAGES_BASE_URL + pageRedirection;
+        // La fonction asynchrone pour gérer la soumission et la redirection manuelle
+        form.addEventListener('submit', async function(e) {
+            // Empêche la soumission native du formulaire
+            e.preventDefault(); 
 
-                // Ajout du champ caché '_next' nécessaire à Formspree pour la redirection
-                const redirectInput = document.createElement('input');
-                redirectInput.type = 'hidden';
-                redirectInput.name = '_next';
-                redirectInput.value = redirectionURL;
+            // 1. Désactiver le bouton et indiquer le chargement
+            submitButton.disabled = true;
+            submitButton.textContent = 'Envoi en cours...';
+
+            // 2. Récupérer l'URL d'action Formspree (avec l'ID)
+            const formURL = form.action;
+
+            // 3. Récupérer les données du formulaire
+            const formData = new FormData(form);
+            
+            // 4. Déterminer la page de redirection cible
+            const choix = formData.get('Choix_Domaine'); 
+            let pageRedirection = '';
+
+            switch (choix) {
+                case 'Robotique':
+                    pageRedirection = 'robotique.html';
+                    break;
+                case 'Développement Web':
+                    pageRedirection = 'developpement-web.html';
+                    break;
+                default:
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'Valider mon Choix et Découvrir le Programme';
+                    return; 
+            }
+            
+            // 5. Envoi des données à Formspree via Fetch (en arrière-plan)
+            try {
+                const response = await fetch(formURL, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json' 
+                    }
+                });
                 
-                // Ajout du champ au formulaire avant l'envoi
-                form.appendChild(redirectInput);
+                if (response.ok) {
+                    // 6. Succès de la soumission Formspree -> Redirection Manuelle IMMÉDIATE
+                    const redirectionURL = GITHUB_PAGES_BASE_URL + pageRedirection;
+                    window.location.replace(redirectionURL);
+                } else {
+                    console.error('Erreur lors de l\'envoi du formulaire Formspree:', response.status);
+                    alert('Une erreur est survenue lors de l\'envoi des données. Veuillez réessayer.');
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'Valider mon Choix et Découvrir le Programme';
+                }
+            } catch (error) {
+                console.error('Erreur réseau:', error);
+                alert('Erreur réseau. Veuillez vérifier votre connexion et réessayer.');
+                submitButton.disabled = false;
+                submitButton.textContent = 'Valider mon Choix et Découvrir le Programme';
             }
         });
     </script>
