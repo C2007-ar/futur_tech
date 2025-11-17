@@ -95,15 +95,16 @@
             </fieldset>
 
             <!-- Bouton de Soumission -->
-            <button type="submit" 
+            <!-- Bouton de Soumission (Doit avoir id="submit-button") -->
+            <button type="submit" id="submit-button"
                     class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-lg text-lg font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out">
                 Valider mon Choix et Découvrir le Programme
             </button>
         </form>
     </div>
 
-    <script>
-<script><script>
+    
+<script>
         // L'URL de base est forcée : c'est l'URL de votre dépôt GitHub Pages.
         const GITHUB_PAGES_BASE_URL = 'https://c2007-ar.github.io/futur_tech/'; 
         const form = document.getElementById('orientation-form');
@@ -142,7 +143,7 @@
                     pageRedirection = 'robotique.html';
                     break;
                 case 'Développement Web':
-                    pageRedirection = 'devweb.html';
+                    pageRedirection = 'developpement-web.html';
                     break;
                 default:
                     // Si aucun choix n'est fait, on réactive le bouton
@@ -180,8 +181,6 @@
                 submitButton.textContent = 'Valider mon Choix et Découvrir le Programme';
             }
         });
-    </script>
-    </script>
     </script>
 </body>
 </html>
