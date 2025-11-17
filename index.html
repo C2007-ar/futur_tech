@@ -1,1 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orientation Étudiante - Choix de Domaine</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Choix de Domaine Technologique</h1>
+        <p>Veuillez remplir le formulaire ci-dessous pour enregistrer vos informations et choisir votre domaine d'étude.</p>
+    </header>
 
+    <main>
+        <form id="orientationForm" action="#" method="POST">
+            <h2>1. Vos Informations Personnelles</h2>
+            
+            <label for="nom">Nom et Prénoms :</label>
+            <input type="text" id="nom" name="Nom" required>
+
+            <label for="age">Âge :</label>
+            <input type="number" id="age" name="Age" required min="16" max="60">
+
+            <label for="classe">Classe :</label>
+            <select id="classe" name="Classe" required>
+                <option value="" disabled selected>Sélectionnez votre classe</option>
+                <option value="CP 1_A">CP 1_A</option>
+                <option value="CP 1_B">CP 1_B</option>
+            </select>
+
+            <label for="bac">Bac Obtenu :</label>
+            <input type="text" id="bac" name="Bac_Obtenu" placeholder="Ex: S, D, C, etc." required>
+            
+            <label for="moyenne">Moyenne Obtenue au Bac :</label>
+            <input type="number" id="moyenne" name="Moyenne_Bac" step="0.01" min="10.00" max="20.00" required>
+            
+            <hr>
+
+            <h2>2. Choisissez votre Domaine</h2>
+            
+            <div class="choix-container">
+                <button type="button" data-domaine="robotique" class="btn-choix">🤖 Robotique</button>
+                <button type="button" data-domaine="ia" class="btn-choix">🧠 Intelligence Artificielle</button>
+                <button type="button" data-domaine="devweb" class="btn-choix">🌐 Développement Web</button>
+            </div>
+            
+            <input type="hidden" id="domaineChoisi" name="Domaine_Choisi" value="">
+            
+            <button type="submit" id="submitBtn" disabled>Valider et Continuer</button>
+            <p id="messageErreur" style="color: red; display: none;">Veuillez d'abord choisir un domaine.</p>
+        </form>
+    </main>
+
+    <script>
+        // Ce script gère le choix du domaine et active le bouton de soumission
+        const form = document.getElementById('orientationForm');
+        const btnsChoix = document.querySelectorAll('.btn-choix');
+        const domaineChoisiInput = document.getElementById('domaineChoisi');
+        const submitBtn = document.getElementById('submitBtn');
+
+        btnsChoix.forEach(button => {
+            button.addEventListener('click', (event) => {
+                // 1. Enlever la classe 'active' de tous les boutons
+                btnsChoix.forEach(btn => btn.classList.remove('active'));
+                
+                // 2. Ajouter la classe 'active' au bouton cliqué
+                event.target.classList.add('active');
+                
+                // 3. Mettre à jour le champ caché avec le choix et activer le bouton Soumettre
+                const choix = event.target.getAttribute('data-domaine');
+                domaineChoisiInput.value = choix;
+                submitBtn.disabled = false;
+                
+                // Mettre à jour l'action du formulaire pour la redirection (qui sera gérée dans une étape suivante)
+                // Pour l'instant, on laisse le formulaire soumettre pour la collecte de données.
+            });
+        });
+        
+        // La gestion de la soumission et de la redirection sera ajoutée à l'Étape 4.
+
+    </script>
+</body>
+</html>
