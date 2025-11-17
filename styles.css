@@ -1,0 +1,119 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f7f6;
+    color: #333;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+header {
+    background-color: #007bff;
+    color: white;
+    padding: 20px 0;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+main {
+    background-color: white;
+    padding: 30px;
+    margin: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    width: 90%;
+}
+
+h2 {
+    color: #007bff;
+    border-bottom: 2px solid #e9ecef;
+    padding-bottom: 10px;
+    margin-top: 25px;
+}
+
+/* Styles du Formulaire */
+form label {
+    display: block;
+    margin: 15px 0 5px;
+    font-weight: bold;
+}
+
+form input[type="text"],
+form input[type="number"],
+form select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* Pour inclure le padding dans la largeur */
+}
+
+/* Styles des Boutons de Choix */
+.choix-container {
+    display: flex;
+    justify-content: space-around;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.btn-choix {
+    flex-grow: 1;
+    padding: 15px 10px;
+    border: 2px solid #ccc;
+    background-color: #f8f9fa;
+    color: #333;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background-color 0.2s, border-color 0.2s;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.btn-choix:hover {
+    background-color: #e9ecef;
+}
+
+/* Style pour le bouton actif */
+.btn-choix.active {
+    background-color: #007bff;
+    color: white;
+    border-color: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Style du Bouton de Validation */
+#submitBtn {
+    width: 100%;
+    padding: 15px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 18px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.2s;
+}
+
+#submitBtn:hover:not([disabled]) {
+    background-color: #1e7e34;
+}
+
+#submitBtn:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background-color: #e9ecef;
+    margin: 30px 0;
+}
