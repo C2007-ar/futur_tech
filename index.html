@@ -53,32 +53,70 @@
     </main>
 
     <script>
-        // Ce script gère le choix du domaine et active le bouton de soumission
-        const form = document.getElementById('orientationForm');
-        const btnsChoix = document.querySelectorAll('.btn-choix');
-        const domaineChoisiInput = document.getElementById('domaineChoisi');
-        const submitBtn = document.getElementById('submitBtn');
+        <script>
+    const form = document.getElementById('orientationForm');
+    const btnsChoix = document.querySelectorAll('.btn-choix');
+    const domaineChoisiInput = document.getElementById('domaineChoisi');
+    const submitBtn = document.getElementById('submitBtn');
 
-        btnsChoix.forEach(button => {
-            button.addEventListener('click', (event) => {
-                // 1. Enlever la classe 'active' de tous les boutons
-                btnsChoix.forEach(btn => btn.classList.remove('active'));
-                
-                // 2. Ajouter la classe 'active' au bouton cliqué
-                event.target.classList.add('active');
-                
-                // 3. Mettre à jour le champ caché avec le choix et activer le bouton Soumettre
-                const choix = event.target.getAttribute('data-domaine');
-                domaineChoisiInput.value = choix;
-                submitBtn.disabled = false;
-                
-                // Mettre à jour l'action du formulaire pour la redirection (qui sera gérée dans une étape suivante)
-                // Pour l'instant, on laisse le formulaire soumettre pour la collecte de données.
-            });
+    // Mettez ici l'URL que vous avez copiée de Google Apps Script
+    // Exemple : const GOOGLE_SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfyc.../exec';
+    const GOOGLE_SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwDHFbzVwx4v5sD7trp2MHS5fbBHHkd2jlw1Kosyu4YxCMIoEmcufGbEzh81hhuyjV2-A/exec'; 
+    
+    // 1. Gestion du choix de domaine
+    btnsChoix.forEach(button => {
+        button.addEventListener('click', (event) => {
+            btnsChoix.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            const choix = event.target.getAttribute('data-domaine');
+            domaineChoisiInput.value = choix;
+            submitBtn.disabled = false;
         });
-        
-        // La gestion de la soumission et de la redirection sera ajoutée à l'Étape 4.
+    });
 
+    // 2. Gestion de la soumission du formulaire
+    form.addEventListener('submit', function(e) {
+        e.preventDefault(); // Empêche l'envoi HTML standard
+
+        if (!domaineChoisiInput.value) {
+            alert("Veuillez choisir un domaine avant de valider.");
+            return;
+        }
+
+        // Récupérer toutes les données du formulaire
+        const formData = new FormData(form);
+        
+        // Convertir les données en format URL-encoded pour Apps Script
+        const urlEncodedData = new URLSearchParams(formData).toString();
+        
+        // Bloquer le bouton pendant l'envoi pour éviter les doublons
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Envoi en cours...";
+
+        // Envoi des données à Google Sheets via Apps Script
+        fetch(GOOGLE_SHEET_ENDPOINT, {
+            method: 'POST',
+            body: urlEncodedData,
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        })
+        .then(response => {
+            // Le statut OK (200) de Apps Script est renvoyé même s'il ne contient que "OK"
+            console.log('Données envoyées avec succès à Google Sheet.');
+            
+            // REDIRECTION après l'envoi réussi
+            const domaine = domaineChoisiInput.value;
+            window.location.href = `info-${domaine}.html`;
+        })
+        .catch(error => {
+            console.error('Erreur lors de l\'envoi des données :', error);
+            alert("Une erreur est survenue lors de l'enregistrement. Veuillez réessayer.");
+            submitBtn.disabled = false;
+            submitBtn.textContent = "Valider et Continuer";
+        });
+    });
+</script>
     </script>
 </body>
 </html>
