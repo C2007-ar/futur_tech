@@ -25,6 +25,9 @@ margin: auto;
 .hero h2, .domain-section h2 {
 color: #cfa1ff;
 }
+footer{
+  align-items: center;
+}
 .cards {
 display: flex;
 flex-wrap: wrap;
