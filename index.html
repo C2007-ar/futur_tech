@@ -103,20 +103,22 @@
     </div>
 
     <script>
-<script>
+<script><script>
         // L'URL de base est forcée : c'est l'URL de votre dépôt GitHub Pages.
         const GITHUB_PAGES_BASE_URL = 'https://c2007-ar.github.io/futur_tech/'; 
         const form = document.getElementById('orientation-form');
-        const submitButton = document.getElementById('submit-button');
-
-        // *** AJOUT DE CONSOLE.LOG POUR LE DIAGNOSTIC ***
-        console.log("Script chargé. Formulaire trouvé:", !!form);
+        const submitButton = document.getElementById('submit-button'); // Maintenant que l'ID est là, ça fonctionne !
         
+        // S'assurer que le formulaire et le bouton existent
+        if (!form || !submitButton) {
+            console.error("Erreur critique: Le formulaire ou le bouton de soumission est introuvable.");
+            // Le script s'arrête ici si l'un des deux est manquant.
+            alert("Erreur de configuration du formulaire. Veuillez vérifier le code source (ID manquant).");
+            return;
+        }
+
         // La fonction asynchrone pour gérer la soumission et la redirection manuelle
         form.addEventListener('submit', async function(e) {
-            
-            // Étape 1 : Test de l'interception. Si ce message s'affiche, c'est que le script fonctionne.
-            console.log("Événement de soumission intercepté.");
             
             // Empêche la soumission native du formulaire
             e.preventDefault(); 
@@ -140,10 +142,10 @@
                     pageRedirection = 'robotique.html';
                     break;
                 case 'Développement Web':
-                    pageRedirection = 'developpement-web.html';
+                    pageRedirection = 'devweb.html';
                     break;
                 default:
-                    console.log("Erreur: Choix de domaine non sélectionné ou invalide.");
+                    // Si aucun choix n'est fait, on réactive le bouton
                     submitButton.disabled = false;
                     submitButton.textContent = 'Valider mon Choix et Découvrir le Programme';
                     return; 
@@ -160,23 +162,25 @@
                 });
                 
                 if (response.ok) {
-                    console.log("Soumission Formspree réussie. Redirection...");
                     // 6. Succès de la soumission Formspree -> Redirection Manuelle IMMÉDIATE
                     const redirectionURL = GITHUB_PAGES_BASE_URL + pageRedirection;
                     window.location.replace(redirectionURL);
                 } else {
+                    // Gérer les erreurs de Formspree
                     console.error('Erreur lors de l\'envoi du formulaire Formspree:', response.status);
                     alert('Une erreur est survenue lors de l\'envoi des données. Veuillez réessayer.');
                     submitButton.disabled = false;
                     submitButton.textContent = 'Valider mon Choix et Découvrir le Programme';
                 }
             } catch (error) {
-                console.error('Erreur réseau ou JavaScript non gérée:', error);
-                alert('Erreur réseau ou JavaScript non gérée. Veuillez contacter l\'administrateur.');
+                // Gérer les erreurs réseau
+                console.error('Erreur réseau:', error);
+                alert('Erreur réseau. Veuillez vérifier votre connexion et réessayer.');
                 submitButton.disabled = false;
                 submitButton.textContent = 'Valider mon Choix et Découvrir le Programme';
             }
         });
+    </script>
     </script>
     </script>
 </body>
