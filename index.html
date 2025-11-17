@@ -103,10 +103,16 @@
     </div>
 
     <script>
-        // Script pour gérer la redirection après l'envoi du formulaire via Formspree
+        <script>
+        // =========================================================================
+        //  CODE ROBUSTE : L'URL de base de votre site GitHub Pages est forcée.
+        //  Ceci résout les problèmes de redirection avec Formspree.
+        // =========================================================================
+        const GITHUB_PAGES_BASE_URL = 'https://c2007-ar.github.io/futur_tech/'; 
+        
         document.getElementById('orientation-form').addEventListener('submit', function(e) {
             
-            // 1. On récupère le choix fait par l'étudiant
+            const form = e.currentTarget;
             const choix = document.querySelector('input[name="Choix_Domaine"]:checked');
             
             if (choix) {
@@ -117,36 +123,26 @@
                         pageRedirection = 'robotique.html';
                         break;
                     case 'Développement Web':
+                        // Le fichier de destination est 'developpement-web.html'
                         pageRedirection = 'devweb.html';
                         break;
                 }
                 
-                // 2. Création du champ caché Formspree pour la redirection
+                // Construction de l'URL de redirection complète 
+                const redirectionURL = GITHUB_PAGES_BASE_URL + pageRedirection;
+
+                // Ajout du champ caché '_next' nécessaire à Formspree pour la redirection
                 const redirectInput = document.createElement('input');
                 redirectInput.type = 'hidden';
                 redirectInput.name = '_next';
+                redirectInput.value = redirectionURL;
                 
-                // 3. Définition de l'URL de redirection complète
-                // L'URL doit être absolue pour Formspree. 
-                // Si le site est hébergé sur GitHub Pages (URL: https://USERNAME.github.io/REPO_NAME/)
-                // Vous devriez utiliser l'URL complète comme valeur.
-                
-                // Pour le test local, on utilise l'origine actuelle:
-                let baseURL = window.location.origin + window.location.pathname;
-                // Assurez-vous que l'URL de base se termine par un slash si nécessaire pour la bonne concaténation
-                if (baseURL.endsWith('/index.html')) {
-                    baseURL = baseURL.substring(0, baseURL.length - 10); // Retire 'index.html'
-                } else if (!baseURL.endsWith('/')) {
-                    baseURL += '/';
-                }
-                
-                redirectInput.value = baseURL + pageRedirection;
-                
-                // 4. Ajout du champ au formulaire
-                e.currentTarget.appendChild(redirectInput);
+                // Ajout du champ au formulaire avant l'envoi
+                form.appendChild(redirectInput);
             }
-            // La soumission se fait via Formspree.
         });
+    </script>
+            
     </script>
 </body>
 </html>
