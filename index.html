@@ -1,134 +1,30 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Orientation Étudiante - Choix de Domaine</title>
-    <link rel="stylesheet" href="styles.css">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Future Innovators Lab</title>
+<link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <header>
-        <h1>Choix de Domaine Technologique</h1>
-        <p>Veuillez remplir le formulaire ci-dessous pour enregistrer vos informations et choisir votre domaine d'étude.</p>
-    </header>
+<header>
+<h1>Future Innovators Lab</h1>
+<nav>
+<a href="index.html">Accueil</a>
+<a href="inscription.html">Inscription</a>
+</nav>
+</header>
 
-    <main>
-        <form id="orientationForm" action="#" method="POST">
-            <h2>1. Vos Informations Personnelles</h2>
-            
-            <label for="nom">Nom et Prénoms :</label>
-            <input type="text" id="nom" name="Nom" required>
 
-            <label for="age">Âge :</label>
-            <input type="number" id="age" name="Age" required min="16" max="60">
+<section class="hero">
+<h2>Choisis ton domaine et développe tes compétences</h2>
+<p>Un espace dédié aux étudiants en robotique et en développement web.</p>
+<a href="inscription.html" class="btn">Commencer l'inscription</a>
+</section>
 
-            <label for="classe">Classe :</label>
-            <select id="classe" name="Classe" required>
-                <option value="" disabled selected>Sélectionnez votre classe</option>
-                <option value="CP 1_A">CP 1_A</option>
-                <option value="CP 1_B">CP 1_B</option>
-            </select>
 
-            <label for="bac">Bac Obtenu :</label>
-            <input type="text" id="bac" name="Bac_Obtenu" placeholder="Ex: S, D, C, etc." required>
-            
-            <label for="moyenne">Moyenne Obtenue au Bac :</label>
-            <input type="number" id="moyenne" name="Moyenne_Bac" step="0.01" min="10.00" max="20.00" required>
-            
-            <hr>
-
-            <h2>2. Choisissez votre Domaine</h2>
-            
-            <div class="choix-container">
-                <button type="button" data-domaine="robotique" class="btn-choix">🤖 Robotique</button>
-                <button type="button" data-domaine="ia" class="btn-choix">🧠 Intelligence Artificielle</button>
-                <button type="button" data-domaine="devweb" class="btn-choix">🌐 Développement Web</button>
-            </div>
-            
-            <input type="hidden" id="domaineChoisi" name="Domaine_Choisi" value="">
-            
-            <button type="submit" id="submitBtn" disabled>Valider et Continuer</button>
-            <p id="messageErreur" style="color: red; display: none;">Veuillez d'abord choisir un domaine.</p>
-        </form>
-    </main>
-
-    
- <script>
-    const form = document.getElementById('orientationForm');
-    const btnsChoix = document.querySelectorAll('.btn-choix');
-    const domaineChoisiInput = document.getElementById('domaineChoisi');
-    const submitBtn = document.getElementById('submitBtn');
-
-    // Mettez ici l'URL que vous avez copiée de Google Apps Script
-    // ATTENTION : Si l'URL n'est pas correcte, l'envoi échouera, mais la redirection devrait toujours fonctionner.
-    const GOOGLE_SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwDHFbzVwx4v5sD7trp2MHS5fbBHHkd2jlw1Kosyu4YxCMIoEmcufGbEzh81hhuyjV2-A/exec'; 
-    
-    // --- 1. Gestion du choix de domaine (Sélection) ---
-    btnsChoix.forEach(button => {
-        button.addEventListener('click', (event) => {
-            // Retire la sélection 'active' de tous les boutons
-            btnsChoix.forEach(btn => btn.classList.remove('active'));
-            
-            // Ajoute la sélection 'active' au bouton cliqué
-            event.target.classList.add('active');
-            
-            // Met à jour le champ caché avec le choix de domaine
-            const choix = event.target.getAttribute('data-domaine');
-            domaineChoisiInput.value = choix;
-            
-            // Active le bouton de soumission
-            submitBtn.disabled = false;
-        });
-    });
-
-    // --- 2. Gestion de la soumission du formulaire (Envoi et Redirection) ---
-    form.addEventListener('submit', function(e) {
-        e.preventDefault(); // Empêche l'envoi HTML standard et la redirection immédiate
-
-        const domaine = domaineChoisiInput.value;
-
-        if (!domaine) {
-            alert("Veuillez choisir un domaine avant de valider.");
-            submitBtn.disabled = true;
-            return;
-        }
-
-        // Bloquer le bouton pendant l'envoi pour éviter les doublons
-        submitBtn.disabled = true;
-        submitBtn.textContent = "Envoi des données...";
-
-        // Récupérer toutes les données du formulaire
-        const formData = new FormData(form);
-        const urlEncodedData = new URLSearchParams(formData).toString();
-        
-        // Envoi des données à Google Sheets via Apps Script
-        fetch(GOOGLE_SHEET_ENDPOINT, {
-            method: 'POST',
-            body: urlEncodedData,
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            }
-        })
-        .then(response => {
-            // Le statut OK est reçu. On considère que l'envoi a réussi (même si on ne vérifie pas le contenu)
-            console.log('Données envoyées avec succès à Google Sheet.');
-            
-            // REDIRECTION : C'est ici que l'étudiant est envoyé vers la page choisie.
-            window.location.href = `info-${domaine}.html`;
-        })
-        .catch(error => {
-            console.error('Erreur lors de l\'envoi des données :', error);
-            // Même en cas d'erreur d'envoi des données, on peut choisir de rediriger l'utilisateur.
-            // Si vous voulez être sûr qu'il accède au groupe WhatsApp :
-            alert("Une erreur est survenue lors de l'enregistrement de vos données. Vous allez être redirigé...");
-            window.location.href = `info-${domaine}.html`;
-            
-            // Réactiver le bouton en cas de vrai blocage :
-            // submitBtn.disabled = false;
-            // submitBtn.textContent = "Valider et Continuer";
-        });
-    });
-</script>
-
+<footer>
+<p>© 2025 Future Innovators Lab</p>
+</footer>
 </body>
 </html>
