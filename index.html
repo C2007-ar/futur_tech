@@ -103,13 +103,21 @@
     </div>
 
     <script>
-// L'URL de base est forcée : c'est l'URL de votre dépôt GitHub Pages.
+<script>
+        // L'URL de base est forcée : c'est l'URL de votre dépôt GitHub Pages.
         const GITHUB_PAGES_BASE_URL = 'https://c2007-ar.github.io/futur_tech/'; 
         const form = document.getElementById('orientation-form');
         const submitButton = document.getElementById('submit-button');
+
+        // *** AJOUT DE CONSOLE.LOG POUR LE DIAGNOSTIC ***
+        console.log("Script chargé. Formulaire trouvé:", !!form);
         
         // La fonction asynchrone pour gérer la soumission et la redirection manuelle
         form.addEventListener('submit', async function(e) {
+            
+            // Étape 1 : Test de l'interception. Si ce message s'affiche, c'est que le script fonctionne.
+            console.log("Événement de soumission intercepté.");
+            
             // Empêche la soumission native du formulaire
             e.preventDefault(); 
 
@@ -135,6 +143,7 @@
                     pageRedirection = 'developpement-web.html';
                     break;
                 default:
+                    console.log("Erreur: Choix de domaine non sélectionné ou invalide.");
                     submitButton.disabled = false;
                     submitButton.textContent = 'Valider mon Choix et Découvrir le Programme';
                     return; 
@@ -151,6 +160,7 @@
                 });
                 
                 if (response.ok) {
+                    console.log("Soumission Formspree réussie. Redirection...");
                     // 6. Succès de la soumission Formspree -> Redirection Manuelle IMMÉDIATE
                     const redirectionURL = GITHUB_PAGES_BASE_URL + pageRedirection;
                     window.location.replace(redirectionURL);
@@ -161,12 +171,13 @@
                     submitButton.textContent = 'Valider mon Choix et Découvrir le Programme';
                 }
             } catch (error) {
-                console.error('Erreur réseau:', error);
-                alert('Erreur réseau. Veuillez vérifier votre connexion et réessayer.');
+                console.error('Erreur réseau ou JavaScript non gérée:', error);
+                alert('Erreur réseau ou JavaScript non gérée. Veuillez contacter l\'administrateur.');
                 submitButton.disabled = false;
                 submitButton.textContent = 'Valider mon Choix et Découvrir le Programme';
             }
         });
+    </script>
     </script>
 </body>
 </html>
