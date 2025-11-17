@@ -1,50 +1,152 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Future Innovators Lab</title>
-<link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orientation Étudiante</title>
+    <!-- Chargement de Tailwind CSS pour un design moderne et responsive -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Configuration de la police Inter */
+        html { font-family: 'Inter', sans-serif; }
+    </style>
 </head>
-<body>
-<header class="header">
-<h1 class="logo">Future Innovators Lab</h1>
-<nav>
-<a href="index.html">Accueil</a>
-<a href="inscription.html">Inscription</a>
-</nav>
-</header>
+<body class="bg-gray-50 min-h-screen flex items-center justify-center p-4">
 
+    <div class="bg-white p-8 rounded-xl shadow-2xl w-full max-w-lg">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">
+            Choix d'Orientation Technologique 🚀
+        </h1>
+        
+        <!-- 
+            ATTENTION : Remplacez VOTRE_ID_FORMSPREE par l'ID que vous obtiendrez
+            après avoir créé un formulaire gratuit sur Formspree. 
+            C'est là que vous recevrez toutes les données des étudiants.
+        -->
+        <form id="orientation-form" action="https://formspree.io/f/VOTRE_ID_FORMSPREE" method="POST" class="space-y-6">
 
-<section class="hero">
-<div class="hero-content">
-<h2>Former les Innovateurs de Demain</h2>
-<p>Rejoins un espace d’apprentissage moderne et interactif. Découvre la robotique ou le développement web et développe tes compétences pour exceller dans un monde numérique et technologique.</p>
-<p>Avec nous, tu apprendras non seulement la théorie mais aussi la pratique à travers des projets concrets qui te permettront de bâtir un portfolio impressionnant pour ton futur académique et professionnel.</p>
-<a href="inscription.html" class="btn">Commencer maintenant</a>
-</div>
-</section>
+            <!-- Section Informations Personnelles -->
+            <fieldset class="border border-indigo-200 p-4 rounded-lg">
+                <legend class="text-lg font-semibold text-indigo-700 px-2">Vos informations</legend>
+                
+                <!-- Nom Complet -->
+                <div>
+                    <label for="nom" class="block text-sm font-medium text-gray-700">Nom Complet :</label>
+                    <input type="text" id="nom" name="Nom" required 
+                           class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 transition duration-150">
+                </div>
 
+                <!-- Âge -->
+                <div>
+                    <label for="age" class="block text-sm font-medium text-gray-700">Âge :</label>
+                    <input type="number" id="age" name="Age" required min="16" 
+                           class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 transition duration-150">
+                </div>
 
-<section class="domains">
-<h2>Choisis ton Domaine</h2>
-<div class="cards">
-<div class="card">
-<h3>Robotique</h3>
-<p>Apprends à manipuler, programmer et concevoir des systèmes automatisés. La robotique développe la logique, la précision et la créativité technique. Tu participeras à des ateliers pratiques pour assembler et programmer de vrais robots, comprendre leurs capteurs et moteurs et réaliser des projets stimulants.</p>
-<a href="inscription.html" class="btn">En savoir plus</a>
-</div>
-<div class="card">
-<h3>Développement Web</h3>
-<p>Maîtrise la création de sites modernes, responsives et interactifs. Tu apprendras le HTML, CSS, JavaScript et découvriras les frameworks les plus utilisés. Crée ton portfolio, développe des projets concrets et sois prêt à entrer dans le monde du numérique avec des compétences recherchées.</p>
-<a href="inscription.html" class="btn">En savoir plus</a>
-</div>
-</div>
-</section>
+                <!-- Classe -->
+                <div>
+                    <label for="classe" class="block text-sm font-medium text-gray-700">Classe :</label>
+                    <select id="classe" name="Classe" required 
+                            class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 transition duration-150">
+                        <option value="">Sélectionner une classe</option>
+                        <option value="CP 1_A">CP 1_A</option>
+                        <option value="CP 1_B">CP 1_B</option>
+                    </select>
+                </div>
 
+                <!-- Bac Obtenu -->
+                <div>
+                    <label for="bac" class="block text-sm font-medium text-gray-700">Bac Obtenu (ex: S, L, ES, Technique) :</label>
+                    <input type="text" id="bac" name="Bac_Obtenu" required 
+                           class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 transition duration-150">
+                </div>
 
-<footer>
-<p>© 2025 Future Innovators Lab - Tous droits réservés</p>
-</footer>
+                <!-- Moyenne au Bac -->
+                <div>
+                    <label for="moyenne" class="block text-sm font-medium text-gray-700">Moyenne au Bac (ex: 14.50) :</label>
+                    <input type="number" step="0.01" id="moyenne" name="Moyenne_Bac" required min="0" max="20" 
+                           class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 transition duration-150">
+                </div>
+            </fieldset>
+
+            <!-- Section Choix de Domaine -->
+            <fieldset class="border border-green-200 p-4 rounded-lg">
+                <legend class="text-lg font-semibold text-green-700 px-2">Votre Choix de Domaine</legend>
+                
+                <div class="space-y-3">
+                    <!-- Choix Robotique -->
+                    <div class="flex items-center p-3 border border-gray-200 rounded-md hover:bg-indigo-50 transition duration-150">
+                        <input type="radio" id="robotique" name="Choix_Domaine" value="Robotique" required 
+                               class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300">
+                        <label for="robotique" class="ml-3 text-sm font-medium text-gray-700">
+                            🤖 Robotique (Conception de systèmes autonomes)
+                        </label>
+                    </div>
+
+                    <!-- Choix Développement Web -->
+                    <div class="flex items-center p-3 border border-gray-200 rounded-md hover:bg-indigo-50 transition duration-150">
+                        <input type="radio" id="devweb" name="Choix_Domaine" value="Développement Web" 
+                               class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300">
+                        <label for="devweb" class="ml-3 text-sm font-medium text-gray-700">
+                            💻 Développement Web (Création d'applications et de sites)
+                        </label>
+                    </div>
+                </div>
+            </fieldset>
+
+            <!-- Bouton de Soumission -->
+            <button type="submit" 
+                    class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-lg text-lg font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out">
+                Valider mon Choix et Découvrir le Programme
+            </button>
+        </form>
+    </div>
+
+    <script>
+        // Script pour gérer la redirection après l'envoi du formulaire via Formspree
+        document.getElementById('orientation-form').addEventListener('submit', function(e) {
+            
+            // 1. On récupère le choix fait par l'étudiant
+            const choix = document.querySelector('input[name="Choix_Domaine"]:checked');
+            
+            if (choix) {
+                let pageRedirection = '';
+                
+                switch (choix.value) {
+                    case 'Robotique':
+                        pageRedirection = 'robotique.html';
+                        break;
+                    case 'Développement Web':
+                        pageRedirection = 'developpement-web.html';
+                        break;
+                }
+                
+                // 2. Création du champ caché Formspree pour la redirection
+                const redirectInput = document.createElement('input');
+                redirectInput.type = 'hidden';
+                redirectInput.name = '_next';
+                
+                // 3. Définition de l'URL de redirection complète
+                // L'URL doit être absolue pour Formspree. 
+                // Si le site est hébergé sur GitHub Pages (URL: https://USERNAME.github.io/REPO_NAME/)
+                // Vous devriez utiliser l'URL complète comme valeur.
+                
+                // Pour le test local, on utilise l'origine actuelle:
+                let baseURL = window.location.origin + window.location.pathname;
+                // Assurez-vous que l'URL de base se termine par un slash si nécessaire pour la bonne concaténation
+                if (baseURL.endsWith('/index.html')) {
+                    baseURL = baseURL.substring(0, baseURL.length - 10); // Retire 'index.html'
+                } else if (!baseURL.endsWith('/')) {
+                    baseURL += '/';
+                }
+                
+                redirectInput.value = baseURL + pageRedirection;
+                
+                // 4. Ajout du champ au formulaire
+                e.currentTarget.appendChild(redirectInput);
+            }
+            // La soumission se fait via Formspree.
+        });
+    </script>
 </body>
 </html>
